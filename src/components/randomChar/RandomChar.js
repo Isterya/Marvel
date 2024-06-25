@@ -7,11 +7,6 @@ import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
 
 class RandomChar extends Component {
-   constructor(props) {
-      super(props);
-      this.updateChar();
-   }
-
    state = {
       char: {},
       loading: true,
@@ -20,8 +15,23 @@ class RandomChar extends Component {
 
    marvelService = new MarvelService();
 
+   componentDidMount() {
+      this.updateChar();
+      this.timerId = setInterval(this.updateChar, 10000);
+   }
+
+   componentWillUnmount() {
+      clearInterval(this.timerId);
+   }
+
    onCharLoaded = (char) => {
       this.setState({ char, loading: false });
+   };
+
+   onCharLoading = () => {
+      this.setState({
+         loading: true,
+      });
    };
 
    onError = () => {
@@ -30,6 +40,7 @@ class RandomChar extends Component {
 
    updateChar = () => {
       const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
+      this.onCharLoading();
       this.marvelService.getCharacter(id).then(this.onCharLoaded).catch(this.onError);
    };
 
@@ -51,7 +62,7 @@ class RandomChar extends Component {
                   Do you want to get to know him better?
                </p>
                <p className="randomchar__title">Or choose another one</p>
-               <button className="button button__main">
+               <button onClick={this.updateChar} className="button button__main">
                   <div className="inner">try it</div>
                </button>
                <img src={mjolnir} alt="mjolnir" className="randomchar__decoration" />
@@ -66,7 +77,12 @@ const View = ({ char }) => {
 
    return (
       <div className="randomchar__block">
-         <img src={thumbnail} alt="Random character" className="randomchar__img" />
+         <img
+            src={thumbnail}
+            alt="Random character"
+            className="randomchar__img"
+            style={thumbnail ? { objectFit: 'contain' } : thumbnail}
+         />
          <div className="randomchar__info">
             <p className="randomchar__name">{name}</p>
             <p className="randomchar__descr">{description}</p>
