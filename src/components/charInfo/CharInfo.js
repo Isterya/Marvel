@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
@@ -69,9 +70,10 @@ const View = ({ char }) => {
          <ul className="char__comics-list">
             {comics.length > 0 ? null : 'There are no comics with this character'}
             {comics.map((item, i) => {
+               const comicsId = item.resourceURI.split('/').pop();
                return (
                   <li key={i} className="char__comics-item">
-                     {item.name}
+                     <Link to={`/comics/${comicsId}`}>{item.name}</Link>
                   </li>
                );
             })}
