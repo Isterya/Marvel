@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -17,6 +18,7 @@ const ComicsList = () => {
 
    useEffect(() => {
       onRequest(offset, true);
+      // eslint-disable-next-line
    }, []);
 
    const onRequest = (offset, initial) => {
@@ -24,32 +26,45 @@ const ComicsList = () => {
       getAllComics(offset).then(onComicsListLoaded);
    };
 
-   const onComicsListLoaded = (newComicsList) => {
+   const onComicsListLoaded = async (newComicsList) => {
       let ended = false;
       if (newComicsList.length < 8) {
          ended = true;
       }
 
+      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+      for (let comic of newComicsList) {
+         await delay(300);
+         setComicsList((comicsList) => [...comicsList, comic]);
+      }
+
       setComicsList((comicsList) => [...comicsList, ...newComicsList]);
       setNewItemLoading(false);
-      setOffset((offset) => offset + 9);
+      setOffset((offset) => offset + 8);
       setComicsEnded(ended);
    };
 
    function renderItems(arr) {
-      const items = arr.map((item, i) => {
+      const items = arr.map((item) => {
          return (
-            <li className="comics__item" key={i}>
-               <Link to={`/comics/${item.id}`}>
-                  <img src={item.thumbnail} alt={item.title} className="comics__item-img" />
-                  <div className="comics__item-name">{item.title}</div>
-                  <div className="comics__item-price">{item.price}</div>
-               </Link>
-            </li>
+            <CSSTransition key={item.id} timeout={500} classNames="comics__item">
+               <li className="comics__item">
+                  <Link to={`/comics/${item.id}`}>
+                     <img src={item.thumbnail} alt={item.title} className="comics__item-img" />
+                     <div className="comics__item-name">{item.title}</div>
+                     <div className="comics__item-price">{item.price}</div>
+                  </Link>
+               </li>
+            </CSSTransition>
          );
       });
 
-      return <ul className="comics__grid">{items}</ul>;
+      return (
+         <ul className="comics__grid">
+            <TransitionGroup component={null}>{items}</TransitionGroup>
+         </ul>
+      );
    }
 
    const items = renderItems(comicsList);
