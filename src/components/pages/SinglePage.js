@@ -13,7 +13,7 @@ const SinglePage = ({ Component, dataType }) => {
 
    useEffect(() => {
       updateData();
-   }, id);
+   }, [id]);
 
    const updateData = () => {
       clearError();
