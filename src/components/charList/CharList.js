@@ -2,15 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
+import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import useMarvelService from '../../services/MarvelService';
 
 import './charList.scss';
 
 const CharList = (props) => {
    const [charList, setCharList] = useState([]);
-   const [newItemLoading, setNewItemLoading] = useState(false);
+   const [newItemLoading, setnewItemLoading] = useState(false);
    const [offset, setOffset] = useState(210);
    const [charEnded, setCharEnded] = useState(false);
 
@@ -18,22 +18,29 @@ const CharList = (props) => {
 
    useEffect(() => {
       onRequest(offset, true);
+      // eslint-disable-next-line
    }, []);
 
    const onRequest = (offset, initial) => {
-      initial ? setNewItemLoading(false) : setNewItemLoading(true);
+      initial ? setnewItemLoading(false) : setnewItemLoading(true);
       getAllCharacters(offset).then(onCharListLoaded);
    };
 
-   const onCharListLoaded = (newCharList) => {
+   const onCharListLoaded = async (newCharList) => {
       let ended = false;
       if (newCharList.length < 9) {
          ended = true;
       }
 
-      setCharList((charList) => [...charList, ...newCharList]);
-      setNewItemLoading(false);
-      setOffset((offset) => offset + 9);
+      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+      for (let char of newCharList) {
+         await delay(300);
+         setCharList((charList) => [...charList, char]);
+      }
+
+      setnewItemLoading(false);
+      setOffset(offset + 9);
       setCharEnded(ended);
    };
 
@@ -53,17 +60,16 @@ const CharList = (props) => {
          }
 
          return (
-            <CSSTransition key={item.id} timeout={300} classNames="char__item" appear>
+            <CSSTransition key={item.id} timeout={500} classNames="char__item">
                <li
                   className="char__item"
                   tabIndex={0}
                   ref={(el) => (itemRefs.current[i] = el)}
-                  style={{ transitionDelay: `${i * 100}ms` }}
                   onClick={() => {
                      props.onCharSelected(item.id);
                      focusOnItem(i);
                   }}
-                  onKeyDown={(e) => {
+                  onKeyPress={(e) => {
                      if (e.key === ' ' || e.key === 'Enter') {
                         props.onCharSelected(item.id);
                         focusOnItem(i);
@@ -78,9 +84,9 @@ const CharList = (props) => {
       });
 
       return (
-         <TransitionGroup component="ul" className="char__grid">
-            {items}
-         </TransitionGroup>
+         <ul className="char__grid">
+            <TransitionGroup component={null}>{items}</TransitionGroup>
+         </ul>
       );
    }
 
@@ -95,9 +101,9 @@ const CharList = (props) => {
          {spinner}
          {items}
          <button
-            className="button button__main button__long"
             disabled={newItemLoading}
             style={{ display: charEnded ? 'none' : 'block' }}
+            className="button button__main button__long"
             onClick={() => onRequest(offset)}
          >
             <div className="inner">load more</div>
