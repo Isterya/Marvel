@@ -53,10 +53,7 @@ const ComicsList = () => {
          ended = true;
       }
 
-      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
       for (let comic of newComicsList) {
-         await delay(300);
          setComicsList((comicsList) => [...comicsList, comic]);
       }
 
@@ -83,7 +80,9 @@ const ComicsList = () => {
 
       return (
          <ul className="comics__grid">
-            <TransitionGroup component={null}>{items}</TransitionGroup>
+            <TransitionGroup appear={true} component={null}>
+               {items}
+            </TransitionGroup>
          </ul>
       );
    }

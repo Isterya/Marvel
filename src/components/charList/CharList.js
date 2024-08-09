@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
@@ -53,10 +53,7 @@ const CharList = (props) => {
          ended = true;
       }
 
-      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
       for (let char of newCharList) {
-         await delay(300);
          setCharList((charList) => [...charList, char]);
       }
 
@@ -106,14 +103,20 @@ const CharList = (props) => {
 
       return (
          <ul className="char__grid">
-            <TransitionGroup component={null}>{items}</TransitionGroup>
+            <TransitionGroup appear={true} component={null}>
+               {items}
+            </TransitionGroup>
          </ul>
       );
    }
 
+   const elements = useMemo(() => {
+      return setContent(process, () => renderItems(charList), newItemLoading);
+   }, [process]);
+
    return (
       <div className="char__list">
-         {setContent(process, () => renderItems(charList), newItemLoading)}
+         {elements}
          <button
             disabled={newItemLoading}
             style={{ display: charEnded ? 'none' : 'block' }}

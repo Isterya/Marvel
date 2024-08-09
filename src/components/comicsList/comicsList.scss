@@ -29,6 +29,13 @@
          color: rgba(0, 0, 0, 0.6);
          text-transform: uppercase;
       }
+      &-appear {
+         opacity: 0;
+      }
+      &-appear-active {
+         opacity: 1;
+         transition: opacity 500ms ease-in;
+      }
       &-enter {
          opacity: 0;
       }
