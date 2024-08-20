@@ -7,6 +7,7 @@
       position: relative;
       z-index: 5;
       background-color: #fff;
+      order: 1;
       &-name {
          font-weight: bold;
          font-size: 22px;
@@ -65,5 +66,45 @@
       font-size: 18px;
       line-height: 24px;
       text-align: center;
+   }
+}
+
+@media (max-width: 1200px) {
+   .char__info-name {
+      font-size: 19px;
+      line-height: 16px;
+   }
+
+   .char__btns {
+      display: flex;
+      flex-direction: column;
+   }
+}
+
+@media (max-width: 992px) {
+   .char__basics {
+      grid-template-columns: 200px auto;
+
+      img {
+         width: 200px;
+         height: 200px;
+      }
+   }
+}
+
+@media (max-width: 768px) {
+   .char__info {
+      margin-top: 20px;
+   }
+}
+
+@media (max-width: 576px) {
+   .char__basics {
+      grid-template-columns: 140px auto;
+
+      img {
+         width: 140px;
+         height: 140px;
+      }
    }
 }

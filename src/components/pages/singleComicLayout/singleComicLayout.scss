@@ -38,3 +38,32 @@
       }
    }
 }
+
+@media (max-width: 1200px) {
+   .single-comic {
+      grid-template-columns: 226px 550px auto;
+      column-gap: 30px;
+
+      &__img {
+         width: 236px;
+         height: 394px;
+      }
+   }
+}
+
+@media (max-width: 992px) {
+   .single-comic {
+      grid-template-columns: 236px 335px auto;
+   }
+}
+
+@media (max-width: 768px) {
+   .single-comic {
+      grid-template-columns: 1fr;
+      justify-items: center;
+
+      &__name {
+         margin-top: 20px;
+      }
+   }
+}

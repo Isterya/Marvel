@@ -55,3 +55,9 @@
       }
    }
 }
+
+@media (max-width: 576px) {
+   .comics__grid {
+      justify-content: center;
+   }
+}

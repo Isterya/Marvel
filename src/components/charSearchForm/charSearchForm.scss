@@ -55,3 +55,21 @@
       }
    }
 }
+
+@media (max-width: 1200px) {
+   .char__search-wrapper input {
+      width: 150px;
+   }
+}
+
+@media (max-width: 992px) {
+   .char__search-wrapper input {
+      width: 200px;
+   }
+}
+
+@media (max-width: 576px) {
+   .char__search-wrapper input {
+      width: 150px;
+   }
+}
