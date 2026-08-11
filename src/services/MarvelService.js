@@ -3,9 +3,9 @@ import { useHttp } from '../hooks/http.hook';
 const useMarvelService = () => {
    const { request, clearError, process, setProcess } = useHttp();
 
-   const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
-   const _apiKey = 'apikey=df8911a2f5c25ff7bce1363a6b88bb90';
-   const _baseOffset = 210;
+   const _apiBase = 'https://marvel-server-zeta.vercel.app/';
+   const _apiKey = 'apikey=d4eecb0c66dedbfae4eab45d312fc1df';
+   const _baseOffset = 0;
 
    const getAllCharacters = async (offset = _baseOffset) => {
       const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
