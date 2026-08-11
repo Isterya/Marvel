@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
