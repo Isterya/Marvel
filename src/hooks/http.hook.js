@@ -8,7 +8,7 @@ export const useHttp = () => {
          setProcess('loading');
 
          try {
-            const response = await fetch(url, { method, body, headers });
+            const response = await fetch(url, { method, body });
 
             if (!response.ok) {
                throw new Error(`Could not fetch ${url}, status ${response.status}`);
