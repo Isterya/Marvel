@@ -4,7 +4,7 @@ An official source of information about Marvel. This React-based project relies 
 
 ## Live Demo
 
-https://marvel-git-main-isteryas-projects.vercel.app
+https://marvel-chi-eight.vercel.app/
 
 ## Features
 
