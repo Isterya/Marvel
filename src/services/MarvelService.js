@@ -36,9 +36,11 @@ const useMarvelService = () => {
       return {
          id: char.id,
          name: char.name.length > 22 ? `${char.name.slice(0, 22)}...` : char.name,
-         description: char.description
-            ? `${char.description.slice(0, 180)}...`
-            : 'Nothing is known about that character.',
+          description: char.description
+              ? char.description.length > 180
+                  ? `${char.description.slice(0, 180)}...`
+                  : char.description
+              : 'Nothing is known about that character.',
          thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
          homepage: char.urls[0].url,
          wiki: char.urls[1].url,
